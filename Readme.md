@@ -1,115 +1,155 @@
-Opportunity Engine
+# Opportunity Engine
 
-Opportunity Engine is a full-stack job aggregation and tracking system designed to collect, score, and manage job opportunities in a structured pipeline.
+Opportunity Engine is a lightweight job aggregation and tracking system with a FastAPI backend and a modern frontend.
 
-🚀 Project Overview
-Backend: FastAPI (Python)
-Frontend: Vite (Node.js + TypeScript)
-Database: SQLite (jobs.db)
-Purpose: Aggregate, score, filter, and track job opportunities efficiently
+---
 
-🔥 Features
-Multi-source job scraping
-Intelligent scoring system (role-based filtering)
-Job pipeline tracking (new, applied, rejected, etc.)
-Real-time dashboard (FastAPI + Vite)
-SQLite persistence
-Clean and modern UI
+## 🚀 Project Overview
 
-📦 Installation & Setup
-1. Clone the Repository
+* **Backend:** FastAPI (Python)
+* **Frontend:** Vite (Node.js)
+* **Database:** SQLite (`jobs.db`)
+* **Purpose:** Aggregate, filter, and track job opportunities efficiently
+
+---
+
+## 📦 Installation & Setup
+
+### 1. Clone the Repository
+
+```bash
 git clone git@github.com:Astorias-IT/Opportunity-Engine.git
 cd Opportunity-Engine
+```
 
-🧠 Backend Setup (FastAPI)
-Create Virtual Environment
+---
+
+## 🧠 Backend Setup (FastAPI)
+
+### Create Virtual Environment
+
+```bash
 python3 -m venv .venv
-Activate Environment
-source .venv/bin/activate
-Install Dependencies
-pip install -r requirements.txt
-Run Backend
-uvicorn app.main:app --reload
-Backend URLs
-API: http://127.0.0.1:8000
-Docs: http://127.0.0.1:8000/docs
+```
 
-🎨 Frontend Setup (Vite)
+### Activate Environment
+
+```bash
+source .venv/bin/activate
+```
+
+### Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### Run Backend
+
+```bash
+uvicorn app.main:app --reload
+```
+
+### Backend URLs
+
+* API: http://127.0.0.1:8000
+* Docs: http://127.0.0.1:8000/docs
+
+---
+
+## 🎨 Frontend Setup (Vite)
 
 Open a new terminal:
 
+```bash
 cd frontend
-Install Dependencies
-npm install
-Run Frontend
-npm run dev
-Frontend URL
-http://localhost:5173
+```
 
-🌐 Environment Variables
+### Install Dependencies
 
-Create a .env file inside the frontend folder:
+```bash
+pnpm install
+```
 
-VITE_API_BASE_URL=http://127.0.0.1:8000
+If `pnpm` is not installed:
 
-📡 API Endpoints
-Method	Endpoint	Description
-GET	/jobs	Retrieve jobs
-POST	/fetch	Scrape and update jobs
-POST	/jobs/{id}/apply	Mark job as applied
-POST	/jobs/{id}/reject	Mark job as rejected
-GET	/fetch-runs	Retrieve fetch history
+```bash
+npm install -g pnpm
+pnpm install
+```
 
-🧪 How to Use
-Start the backend
-Start the frontend
-Open http://localhost:5173
-Click "Run Global Fetch"
-Track and manage job opportunities
+### Run Frontend
 
-⚙️ Requirements
+```bash
+pnpm run dev
+```
+
+### Frontend URL
+
+* http://localhost:5173
+
+---
+
+## 🧪 How to Use
+
+1. Start the backend
+2. Start the frontend
+3. Open the frontend URL in your browser
+4. The frontend will communicate with the backend automatically
+
+---
+
+## ⚙️ Requirements
 
 Make sure you have installed:
 
-Python 3.x
-pip
-Node.js
-npm
-git
-📁 Project Structure
+* Python 3.x
+* pip
+* Node.js
+* npm
+* pnpm
+* git
+
+---
+
+## 📁 Project Structure
+
+```
 Opportunity-Engine/
 │
 ├── app/               # Backend logic (FastAPI)
-│   ├── core/          # Scoring logic
-│   ├── db/            # Database layer
-│   ├── services/      # Scrapers / aggregators
-│   └── main.py        # API entry point
-│
 ├── frontend/          # Frontend (Vite)
-│   ├── src/
-│   └── index.html
-│
 ├── requirements.txt   # Python dependencies
 ├── jobs.db            # SQLite database
 ├── cli.py             # CLI utilities
 └── result/            # Output data (if used)
+```
 
-⚠️ Notes
-Do not commit .venv, node_modules, or .env files
-Ensure backend is running before using frontend
-Restart frontend if .env changes
-CORS is already configured in FastAPI for local development
+---
 
-🔥 Future Improvements
-Production deployment (single origin backend + frontend)
-Authentication system
-Advanced job filtering and tagging
-Notifications / automation
-AI-assisted scoring improvements
-👨‍💻 Author
+## ⚠️ Notes
+
+* Do not commit `.venv`, `node_modules`, or `.env` files
+* Ensure backend is running before using frontend
+* If CORS issues appear, configure FastAPI middleware accordingly
+
+---
+
+## 🔥 Future Improvements
+
+* Deployment (Render, Railway, VPS)
+* Authentication system
+* Job application tracking UI
+* Notifications / automation
+
+---
+
+## 👨‍💻 Author
 
 Abel Tana
 
-📄 License
+---
+
+## 📄 License
 
 This project is for personal and educational use.
