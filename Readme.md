@@ -137,8 +137,8 @@ Entry-level Security
 
 The search keywords and filtering logic can be modified in:
 
-app/services/aggregator.py
-app/core/scoring.py
+* app/services/aggregator.py
+* app/core/scoring.py
 
 aggregator.py → controls where and how jobs are scraped
 scoring.py → controls which roles are prioritized, filtered, or rejected
