@@ -1,0 +1,15 @@
+packages:
+  "date-fns": "For formatting relative dates and timestamps"
+  "clsx": "For constructing class names conditionally"
+  "tailwind-merge": "For merging tailwind classes safely"
+  "lucide-react": "For beautiful consistent icons"
+
+images:
+  - path: "artifacts/opportunity-engine/public/images/header-bg.png"
+    description: "Abstract minimal dark background with subtle deep blue and teal glowing gradient orbs, extremely soft and blurred, perfect for glassmorphism overlay"
+    aspect_ratio: "16:9"
+
+notes:
+  - The application is dark mode exclusively as per the requirements.
+  - React Query hooks are imported from @workspace/api-client-react.
+  - Mocking the dark mode at the :root level in CSS since it is a dedicated dark-mode dashboard.
