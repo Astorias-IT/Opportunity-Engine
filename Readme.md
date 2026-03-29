@@ -146,7 +146,9 @@ The search keywords and filtering logic can be modified in:
 By adjusting these files, you can fully customize the engine for any role (e.g. DevOps, Data, Backend, etc.)
 
 Do not commit .venv, node_modules, or .env files
+
 Ensure backend is running before using frontend
+
 If CORS issues appear, configure FastAPI middleware accordingly
 
 ---
