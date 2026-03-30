@@ -25,8 +25,8 @@ To run this project you only need:
 
 Installation:
 
+```bash
 sudo apt update
-
 sudo apt install -y ca-certificates curl gnupg
 
 sudo install -m 0755 -d /etc/apt/keyrings
@@ -45,8 +45,11 @@ sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt update
 
 sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
 
-Next: 
+
+                                                          Next: 
+```bash
 
 sudo systemctl enable docker.socket
 
@@ -56,7 +59,7 @@ sudo systemctl enable docker.service
 
 sudo systemctl start docker.service
 
----
+```
 
 ## ⚡ Quick Start (Docker - Recommended)
 
