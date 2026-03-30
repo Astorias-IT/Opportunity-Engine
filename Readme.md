@@ -48,6 +48,7 @@ This will automatically:
 ### Backend
 
 ```bash
+cd Opportunity-Engine
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
