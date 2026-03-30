@@ -69,11 +69,19 @@ interface RawJob {
   lastSeen?: string | null;
 }
 
-const API_BASE = (import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/$/, "");
+interface JobActionResponse {
+  status?: string;
+  message?: string;
+  job?: RawJob;
+}
+
+const API_BASE = (
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:8000"
+).replace(/\/$/, "");
 
 function buildUrl(path: string): string {
-  if (!API_BASE) return path;
-  return `${API_BASE}${path.startsWith("/") ? path : `/${path}`}`;
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  return `${API_BASE}${normalizedPath}`;
 }
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
@@ -217,15 +225,16 @@ function applyFilters(jobs: Job[], filters: ListJobsParams): Job[] {
   return sortJobs(filtered, filters.sortBy ?? "score");
 }
 
-export async function getHealth(): Promise<{ status: string }> {
-  return request<{ status: string }>("/health");
+export async function getHealth(): Promise<{ status: string; app?: string }> {
+  return request<{ status: string; app?: string }>("/health");
 }
 
 export async function getJobs(filters: ListJobsParams = {}): Promise<JobsResponse> {
-  const raw = await request<RawJob[] | { jobs?: RawJob[] }>("/jobs");
+  const raw = await request<RawJob[] | { jobs?: RawJob[]; count?: number }>("/jobs");
   const baseJobs = Array.isArray(raw) ? raw : Array.isArray(raw?.jobs) ? raw.jobs : [];
   const jobs = baseJobs.map(normalizeJob);
   const filteredJobs = applyFilters(jobs, filters);
+
   const lastUpdated = jobs.reduce<string | null>((latest, job) => {
     const candidate = job.last_seen ?? job.first_seen;
     if (!candidate) return latest;
@@ -245,13 +254,13 @@ export async function runFetch(): Promise<unknown> {
 }
 
 export async function applyJob(id: number): Promise<Job> {
-  const raw = await request<RawJob>(`/jobs/${id}/apply`, { method: "POST" });
-  return normalizeJob(raw);
+  const raw = await request<JobActionResponse>(`/jobs/${id}/apply`, { method: "POST" });
+  return normalizeJob(raw.job ?? {});
 }
 
 export async function rejectJob(id: number): Promise<Job> {
-  const raw = await request<RawJob>(`/jobs/${id}/reject`, { method: "POST" });
-  return normalizeJob(raw);
+  const raw = await request<JobActionResponse>(`/jobs/${id}/reject`, { method: "POST" });
+  return normalizeJob(raw.job ?? {});
 }
 
 export async function getFetchRuns(): Promise<unknown> {

@@ -1,4 +1,21 @@
+# Python
 .venv/
 __pycache__/
 *.pyc
+
+# Database
+jobs.db
+
+# Environment files
 .env
+.env.*
+!.env.example
+
+# Node / frontend
+frontend/node_modules/
+frontend/dist/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/

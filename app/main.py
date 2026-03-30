@@ -18,18 +18,29 @@ from app.db.database import (
 )
 from app.services.aggregator import scrape_all_jobs
 
-app = FastAPI(title="opportunity-engine")
+app = FastAPI(title="Opportunity Engine API")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 FRONTEND_DIR = BASE_DIR / "frontend"
 FRONTEND_DIST_DIR = FRONTEND_DIR / "dist"
-FRONTEND_PUBLIC_DIR = FRONTEND_DIST_DIR / "public"
 
+# Vite build output
+BUILT_INDEX = FRONTEND_DIST_DIR / "index.html"
+BUILT_ASSETS_DIR = FRONTEND_DIST_DIR / "assets"
+
+# Optional plain frontend fallback
+DEV_INDEX = FRONTEND_DIR / "index.html"
+DEV_STATIC_DIR = FRONTEND_DIR / "static"
+DEV_IMAGES_DIR = FRONTEND_DIR / "images"
+
+# CORS for local frontend development
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
         "http://127.0.0.1:5173",
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -42,41 +53,55 @@ def startup():
     init_db()
 
 
-if FRONTEND_PUBLIC_DIR.exists():
-    assets_dir = FRONTEND_PUBLIC_DIR / "assets"
-    if assets_dir.exists():
-        app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
+# Serve built Vite assets if they exist
+if BUILT_ASSETS_DIR.exists():
+    app.mount("/assets", StaticFiles(directory=BUILT_ASSETS_DIR), name="assets")
 
-    images_dir = FRONTEND_PUBLIC_DIR / "images"
-    if images_dir.exists():
-        app.mount("/images", StaticFiles(directory=images_dir), name="images")
+# Optional dev/static folders
+if DEV_STATIC_DIR.exists():
+    app.mount("/static", StaticFiles(directory=DEV_STATIC_DIR), name="static")
 
-elif FRONTEND_DIR.exists():
-    static_dir = FRONTEND_DIR / "static"
-    if static_dir.exists():
-        app.mount("/static", StaticFiles(directory=static_dir), name="static")
+if DEV_IMAGES_DIR.exists():
+    app.mount("/images", StaticFiles(directory=DEV_IMAGES_DIR), name="images")
+
+
+def serve_frontend_index():
+    """
+    Serve the built frontend if available.
+    Fallback to a plain frontend index.html if present.
+    Otherwise return a small API status payload.
+    """
+    if BUILT_INDEX.exists():
+        return FileResponse(BUILT_INDEX)
+
+    if DEV_INDEX.exists():
+        return FileResponse(DEV_INDEX)
+
+    return JSONResponse(
+        status_code=200,
+        content={
+            "status": "ok",
+            "message": "Opportunity Engine API is running, frontend not built yet",
+            "docs": "/docs",
+        },
+    )
 
 
 @app.get("/")
 def root():
-    built_index = FRONTEND_PUBLIC_DIR / "index.html"
-    if built_index.exists():
-        return FileResponse(built_index)
-
-    dev_index = FRONTEND_DIR / "index.html"
-    if dev_index.exists():
-        return FileResponse(dev_index)
-
-    return {"status": "ok", "message": "frontend not found"}
+    return serve_frontend_index()
 
 
 @app.get("/health")
 def health():
-    return {"status": "ok"}
+    return {
+        "status": "ok",
+        "app": "opportunity-engine",
+    }
 
 
 @app.post("/fetch")
-def fetch():
+def fetch_jobs():
     try:
         jobs = scrape_all_jobs()
 
@@ -89,8 +114,8 @@ def fetch():
             raw_source_counts[source] = raw_source_counts.get(source, 0) + 1
 
             scored = score_job(
-                job["title"],
-                job["company"],
+                job.get("title", ""),
+                job.get("company", ""),
                 job.get("source", ""),
                 job.get("location", ""),
                 job.get("work_mode", "unknown"),
@@ -145,6 +170,7 @@ def fetch():
             "fetch_runs": fetch_run_rows,
             "jobs": scored_jobs,
         }
+
     except Exception as exc:
         return JSONResponse(
             status_code=500,
@@ -183,10 +209,12 @@ def jobs(
             status=status,
             limit=limit,
         )
+
         return {
             "count": len(data),
             "jobs": data,
         }
+
     except HTTPException:
         raise
     except Exception as exc:
@@ -209,6 +237,7 @@ def apply_to_job(job_id: int):
             "message": "Job marked as applied",
             "job": updated_job,
         }
+
     except HTTPException:
         raise
     except Exception as exc:
@@ -231,6 +260,7 @@ def reject_job(job_id: int):
             "message": "Job marked as rejected",
             "job": updated_job,
         }
+
     except HTTPException:
         raise
     except Exception as exc:
@@ -257,12 +287,11 @@ def fetch_runs(limit: int = Query(default=20, ge=1, le=100)):
 
 @app.get("/{full_path:path}")
 def spa_fallback(full_path: str):
-    built_index = FRONTEND_PUBLIC_DIR / "index.html"
-    if built_index.exists():
-        return FileResponse(built_index)
-
-    dev_index = FRONTEND_DIR / "index.html"
-    if dev_index.exists():
-        return FileResponse(dev_index)
+    """
+    For SPA routes, return index.html only when a frontend exists.
+    Otherwise return a real 404 so API mistakes are visible.
+    """
+    if BUILT_INDEX.exists() or DEV_INDEX.exists():
+        return serve_frontend_index()
 
     raise HTTPException(status_code=404, detail="Not Found")
