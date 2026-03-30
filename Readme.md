@@ -6,10 +6,10 @@ Opportunity Engine is a lightweight job aggregation and tracking system with a F
 
 ## 🚀 Project Overview
 
-* **Backend:** FastAPI (Python)
-* **Frontend:** Vite (Node.js)
-* **Database:** SQLite (`jobs.db`)
-* **Purpose:** Aggregate, filter, and track job opportunities efficiently
+Backend: FastAPI (Python)
+Frontend: Vite (Node.js)
+Database: SQLite (jobs.db)
+Purpose: Aggregate, filter, and track job opportunities efficiently
 
 ---
 
@@ -18,97 +18,90 @@ Opportunity Engine is a lightweight job aggregation and tracking system with a F
 ### 1. Clone the Repository
 
 ```bash
-git clone git@github.com:Astorias-IT/Opportunity-Engine.git
+git clone https://github.com/Astorias-IT/Opportunity-Engine.git
 cd Opportunity-Engine
 ```
 
 ---
 
-## 🧠 Backend Setup (FastAPI)
+## ⚡ Quick Start (Recommended)
 
-### Create Virtual Environment
-
-```bash
-python3 -m venv .venv
-```
-
-### Activate Environment
+Run everything with a single command:
 
 ```bash
-source .venv/bin/activate
+chmod +x run.sh
+./run.sh
 ```
 
-### Install Dependencies
+This will automatically:
 
-```bash
-pip install -r requirements.txt
-```
-
-### Run Backend
-
-```bash
-uvicorn app.main:app --reload
-```
-
-### Backend URLs
-
-* API: http://127.0.0.1:8000
-* Docs: http://127.0.0.1:8000/docs
+* Create virtual environment
+* Install backend dependencies
+* Install frontend dependencies
+* Configure environment
+* Start backend and frontend
 
 ---
 
-## 🎨 Frontend Setup (Vite)
+## 🧠 Manual Setup (Optional)
 
-Open a new terminal:
+### Backend
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+
+Backend URLs:
+API: http://127.0.0.1:8000
+Docs: http://127.0.0.1:8000/docs
+
+---
+
+### Frontend
 
 ```bash
 cd frontend
+npm install
+npm run dev
 ```
 
-### Install Dependencies
+Frontend URL:
+http://localhost:5173
+
+---
+
+## ⚙️ Environment (Optional)
+
+By default, the frontend connects to:
+
+```
+http://localhost:8000
+```
+
+To override:
 
 ```bash
-pnpm install
+cd frontend
+cp .env.example .env
 ```
 
-If `pnpm` is not installed:
+Edit `.env`:
 
-```bash
-npm install -g pnpm
-pnpm install
 ```
-
-### Run Frontend
-
-```bash
-pnpm run dev
+VITE_API_BASE_URL=http://localhost:8000
 ```
-
-### Frontend URL
-
-* http://localhost:5173
 
 ---
 
 ## 🧪 How to Use
 
-1. Start the backend
-2. Start the frontend
-3. Open the frontend URL in your browser
-4. The frontend will communicate with the backend automatically
-
----
-
-## ⚙️ Requirements
-
-Make sure you have installed:
-
-* Python 3.x
-* pip
-* Node.js
-* npm
-* pnpm
-* git
+1. Run the project (`./run.sh` recommended)
+2. Open the frontend
+3. Click **Run Global Fetch**
+4. Browse and manage jobs (apply, reject, filter, track)
 
 ---
 
@@ -120,45 +113,51 @@ Opportunity-Engine/
 ├── app/               # Backend logic (FastAPI)
 ├── frontend/          # Frontend (Vite)
 ├── requirements.txt   # Python dependencies
-├── jobs.db            # SQLite database
+├── run.sh             # One-command runner
+├── jobs.db            # SQLite database (auto-created)
 ├── cli.py             # CLI utilities
-└── result/            # Output data (if used)
+└── result/            # Output data (optional)
 ```
 
 ---
 
 ## ⚠️ Notes
 
-This project is optimized for a specific job search profile, currently focused on roles such as:
+* Works without `.env` (fallback included)
+* Backend must be running (handled automatically by run.sh)
+* Database is created automatically
+* Do not commit `.venv`, `node_modules`, or `.env`
+* If CORS issues appear, verify FastAPI middleware
+
+---
+
+## 🎯 Customization
+
+This project is optimized for roles such as:
+
 Technical Support
 IT Support / Helpdesk
 Infrastructure / Systems
 Entry-level Security
 
-The search keywords and filtering logic can be modified in:
+Modify behavior in:
 
-* app/services/aggregator.py
-* app/core/scoring.py
+app/services/aggregator.py
+app/core/scoring.py
 
-* aggregator.py → controls where and how jobs are scraped
-* scoring.py → controls which roles are prioritized, filtered, or rejected
+* aggregator.py → scraping logic
+* scoring.py → filtering and ranking
 
-By adjusting these files, you can fully customize the engine for any role (e.g. DevOps, Data, Backend, etc.)
-
-Do not commit .venv, node_modules, or .env files
-
-Ensure backend is running before using frontend
-
-If CORS issues appear, configure FastAPI middleware accordingly
+You can adapt it for any role (DevOps, Backend, Data, Cloud, etc.)
 
 ---
 
 ## 🔥 Future Improvements
 
-* Deployment (Render, Railway, VPS)
-* Authentication system
-* Job application tracking UI
-* Notifications / automation
+Deployment (Render, Railway, VPS)
+Authentication system
+Job tracking improvements
+Automation / notifications
 
 ---
 
