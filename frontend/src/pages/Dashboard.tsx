@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { AlertCircle, Database, Loader2, SearchX } from "lucide-react";
+import { AlertCircle, BriefcaseBusiness, Loader2, SearchX } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Filters } from "@/components/Filters";
 import { JobCard } from "@/components/JobCard";
@@ -72,79 +72,10 @@ export function Dashboard() {
   const data = jobsQuery.data;
 
   return (
-    <div className="min-h-screen text-foreground pb-20" style={{ background: "transparent" }}>
-      <div className="fixed inset-0 -z-10 overflow-hidden" style={{ background: "hsl(222, 47%, 5%)" }}>
-        <div
-          style={{
-            position: "absolute",
-            borderRadius: "9999px",
-            pointerEvents: "none",
-            width: "750px",
-            height: "750px",
-            top: "-220px",
-            left: "-180px",
-            background:
-              "radial-gradient(circle, rgba(79,70,229,0.32) 0%, rgba(99,102,241,0.12) 45%, transparent 72%)",
-            filter: "blur(80px)",
-            animation: "floatOrb1 22s ease-in-out infinite",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            borderRadius: "9999px",
-            pointerEvents: "none",
-            width: "650px",
-            height: "650px",
-            top: "10%",
-            right: "-130px",
-            background:
-              "radial-gradient(circle, rgba(139,92,246,0.28) 0%, rgba(167,139,250,0.10) 45%, transparent 72%)",
-            filter: "blur(80px)",
-            animation: "floatOrb2 28s ease-in-out infinite",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            borderRadius: "9999px",
-            pointerEvents: "none",
-            width: "580px",
-            height: "580px",
-            bottom: "0%",
-            left: "22%",
-            background:
-              "radial-gradient(circle, rgba(37,99,235,0.24) 0%, rgba(96,165,250,0.08) 45%, transparent 72%)",
-            filter: "blur(80px)",
-            animation: "floatOrb3 20s ease-in-out infinite",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            borderRadius: "9999px",
-            pointerEvents: "none",
-            width: "460px",
-            height: "460px",
-            bottom: "20%",
-            right: "12%",
-            background:
-              "radial-gradient(circle, rgba(16,185,129,0.18) 0%, rgba(52,211,153,0.06) 45%, transparent 72%)",
-            filter: "blur(80px)",
-            animation: "floatOrb4 25s ease-in-out infinite",
-          }}
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(99,102,241,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,0.05) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-          }}
-        />
-      </div>
+    <div className="min-h-screen pb-20 text-foreground relative overflow-hidden">
+      <div className="dashboard-bg" />
 
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="relative max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
         <Header
           stats={stats}
           statsLoading={allJobsQuery.isLoading}
@@ -168,27 +99,41 @@ export function Dashboard() {
         />
 
         <div className="space-y-6">
-          <div className="flex items-center justify-between pb-2 border-b border-border/50">
-            <h2 className="text-xl font-display font-semibold flex items-center gap-2">
-              <Database className="w-5 h-5 text-primary" />
-              Ranked Opportunities
-            </h2>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/70 border border-white/70 shadow-[0_8px_24px_rgba(148,163,184,0.14)] backdrop-blur-xl">
+                <BriefcaseBusiness className="w-5 h-5 text-sky-600" />
+              </div>
+              <div>
+                <h2 className="text-xl md:text-2xl font-display font-semibold text-slate-900">
+                  Ranked Opportunities
+                </h2>
+                <p className="text-sm text-slate-500">
+                  Review saved roles, filter the stream, and manage your pipeline.
+                </p>
+              </div>
+            </div>
+
             <div className="flex items-center gap-3">
               {isLoading ? (
-                <span className="px-3 py-1 rounded-full text-xs font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center gap-1.5">
-                  <Loader2 className="w-3 h-3 animate-spin" /> Loading
+                <span className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs font-medium text-amber-700 shadow-sm">
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  Loading
                 </span>
               ) : isError ? (
-                <span className="px-3 py-1 rounded-full text-xs font-medium bg-red-500/10 text-red-400 border border-red-500/20 flex items-center gap-1.5">
-                  <AlertCircle className="w-3 h-3" /> Error
+                <span className="inline-flex items-center gap-2 rounded-full border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-medium text-red-700 shadow-sm">
+                  <AlertCircle className="w-3.5 h-3.5" />
+                  Error
                 </span>
               ) : (
-                <span className="px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" /> Ready
+                <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-700 shadow-sm">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                  Ready
                 </span>
               )}
+
               {!isLoading && data && (
-                <span className="text-sm font-medium text-muted-foreground bg-secondary px-3 py-1 rounded-full border border-border">
+                <span className="rounded-full border border-slate-200 bg-white/80 px-3 py-1.5 text-sm font-medium text-slate-600 shadow-sm backdrop-blur-xl">
                   {data.total} results
                 </span>
               )}
@@ -196,32 +141,38 @@ export function Dashboard() {
           </div>
 
           {isLoading && (
-            <div className="py-20 flex flex-col items-center justify-center text-muted-foreground">
-              <Loader2 className="w-10 h-10 animate-spin text-primary mb-4" />
+            <div className="glass-surface rounded-[28px] px-6 py-20 flex flex-col items-center justify-center text-slate-500">
+              <Loader2 className="w-10 h-10 animate-spin text-sky-600 mb-4" />
               <p>Loading saved opportunities from FastAPI...</p>
             </div>
           )}
 
           {isError && (
-            <div className="py-20 flex flex-col items-center justify-center text-red-400 bg-red-500/5 rounded-2xl border border-red-500/10">
-              <AlertCircle className="w-12 h-12 mb-4 opacity-50" />
-              <h3 className="text-lg font-medium mb-2">Failed to load opportunities</h3>
-              <p className="text-sm opacity-70">{error?.message || "Check your FastAPI backend and try again."}</p>
+            <div className="rounded-[28px] border border-red-200 bg-white/75 px-6 py-20 shadow-[0_20px_60px_rgba(15,23,42,0.06)] backdrop-blur-2xl flex flex-col items-center justify-center text-center">
+              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-red-50 border border-red-100">
+                <AlertCircle className="w-8 h-8 text-red-500" />
+              </div>
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">Failed to load opportunities</h3>
+              <p className="text-sm text-slate-500 max-w-md">
+                {error?.message || "Check your FastAPI backend and try again."}
+              </p>
             </div>
           )}
 
           {!isLoading && !isError && data?.jobs.length === 0 && (
-            <div className="py-24 flex flex-col items-center justify-center text-center bg-card/30 rounded-2xl border border-dashed border-border">
-              <div className="w-16 h-16 rounded-2xl bg-secondary flex items-center justify-center mb-4">
-                <SearchX className="w-8 h-8 text-muted-foreground" />
+            <div className="glass-surface rounded-[28px] px-6 py-24 flex flex-col items-center justify-center text-center">
+              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100 border border-slate-200">
+                <SearchX className="w-8 h-8 text-slate-400" />
               </div>
-              <h3 className="text-xl font-display font-semibold text-foreground mb-2">No matching jobs found</h3>
-              <p className="text-muted-foreground max-w-sm">
+              <h3 className="text-xl font-display font-semibold text-slate-900 mb-2">
+                No matching jobs found
+              </h3>
+              <p className="text-slate-500 max-w-sm">
                 Try adjusting your filters, lowering the minimum score, or running a fetch to refresh the stored dataset.
               </p>
               <button
                 onClick={() => setFilters({ sortBy: "score" })}
-                className="mt-6 px-4 py-2 bg-white text-black rounded-lg text-sm font-medium hover:bg-white/90 transition-colors"
+                className="mt-6 inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50"
               >
                 Clear Filters
               </button>

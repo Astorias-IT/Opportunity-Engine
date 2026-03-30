@@ -22,47 +22,58 @@ export function Filters({ filters, setFilters, uniqueOptions, lastUpdated }: Fil
   };
 
   const InputWrapper = ({ children, label }: { children: React.ReactNode; label: string }) => (
-    <div className="flex flex-col gap-1.5">
-      <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider ml-1">{label}</label>
+    <div className="flex flex-col gap-2">
+      <label className="ml-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">
+        {label}
+      </label>
       {children}
     </div>
   );
 
+  const fieldClassName =
+    "w-full rounded-2xl border border-slate-200 bg-white/80 px-4 py-3 text-sm text-slate-700 shadow-sm backdrop-blur-xl outline-none transition placeholder:text-slate-400 focus:border-sky-300 focus:ring-4 focus:ring-sky-100";
+
   return (
-    <div className="bg-card border border-border rounded-2xl p-6 mb-6 shadow-sm animate-slide-up" style={{ animationDelay: "0.1s" }}>
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+    <div
+      className="glass-surface rounded-[30px] p-6 md:p-7 mb-6 animate-slide-up"
+      style={{ animationDelay: "0.08s" }}
+    >
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center border border-border">
-            <Filter className="w-5 h-5 text-muted-foreground" />
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/80 bg-white/80 shadow-sm">
+            <Filter className="w-5 h-5 text-sky-600" />
           </div>
+
           <div>
-            <h2 className="text-xl font-display font-semibold text-foreground">Refine Stream</h2>
+            <h2 className="text-xl font-display font-semibold text-slate-900">Refine Stream</h2>
             {lastUpdated && (
-              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <p className="text-xs text-slate-500 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500" />
                 Updated {new Date(lastUpdated).toLocaleString()}
               </p>
             )}
           </div>
         </div>
+
         <button
           onClick={clearFilters}
-          className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1.5 px-3 py-1.5 rounded-md hover:bg-secondary transition-colors"
+          className="inline-flex items-center gap-2 self-start rounded-xl px-3 py-2 text-sm font-medium text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
         >
-          <X className="w-4 h-4" /> Clear All
+          <X className="w-4 h-4" />
+          Clear All
         </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         <InputWrapper label="Search">
           <div className="relative">
-            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+            <Search className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
             <input
               type="text"
               placeholder="Keywords, company..."
               value={filters.search || ""}
               onChange={(e) => updateFilter("search", e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-background border border-border rounded-xl text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-muted-foreground"
+              className={`${fieldClassName} pl-10`}
             />
           </div>
         </InputWrapper>
@@ -71,7 +82,7 @@ export function Filters({ filters, setFilters, uniqueOptions, lastUpdated }: Fil
           <select
             value={filters.source || ""}
             onChange={(e) => updateFilter("source", e.target.value)}
-            className="w-full px-4 py-2.5 bg-background border border-border rounded-xl text-sm focus:outline-none focus:border-primary transition-all text-foreground appearance-none"
+            className={fieldClassName}
           >
             <option value="">All Sources</option>
             {uniqueOptions.sources.map((source) => (
@@ -86,7 +97,7 @@ export function Filters({ filters, setFilters, uniqueOptions, lastUpdated }: Fil
           <select
             value={filters.roleClass || ""}
             onChange={(e) => updateFilter("roleClass", e.target.value)}
-            className="w-full px-4 py-2.5 bg-background border border-border rounded-xl text-sm focus:outline-none focus:border-primary transition-all text-foreground appearance-none"
+            className={fieldClassName}
           >
             <option value="">Any Role</option>
             {uniqueOptions.roleClasses.map((roleClass) => (
@@ -101,7 +112,7 @@ export function Filters({ filters, setFilters, uniqueOptions, lastUpdated }: Fil
           <select
             value={filters.status || ""}
             onChange={(e) => updateFilter("status", (e.target.value as ListJobsParams["status"]) || undefined)}
-            className="w-full px-4 py-2.5 bg-background border border-border rounded-xl text-sm focus:outline-none focus:border-primary transition-all text-foreground appearance-none"
+            className={fieldClassName}
           >
             <option value="">All Statuses</option>
             <option value="new">New</option>
@@ -116,7 +127,7 @@ export function Filters({ filters, setFilters, uniqueOptions, lastUpdated }: Fil
           <select
             value={filters.workMode || ""}
             onChange={(e) => updateFilter("workMode", e.target.value)}
-            className="w-full px-4 py-2.5 bg-background border border-border rounded-xl text-sm focus:outline-none focus:border-primary transition-all text-foreground appearance-none"
+            className={fieldClassName}
           >
             <option value="">Any Mode</option>
             {uniqueOptions.workModes.map((workMode) => (
@@ -133,7 +144,7 @@ export function Filters({ filters, setFilters, uniqueOptions, lastUpdated }: Fil
             placeholder="City, country..."
             value={filters.location || ""}
             onChange={(e) => updateFilter("location", e.target.value)}
-            className="w-full px-4 py-2.5 bg-background border border-border rounded-xl text-sm focus:outline-none focus:border-primary transition-all placeholder:text-muted-foreground"
+            className={fieldClassName}
           />
         </InputWrapper>
 
@@ -144,7 +155,7 @@ export function Filters({ filters, setFilters, uniqueOptions, lastUpdated }: Fil
             placeholder="0"
             value={typeof filters.minScore === "number" ? filters.minScore : ""}
             onChange={(e) => updateFilter("minScore", e.target.value ? Number(e.target.value) : null)}
-            className="w-full px-4 py-2.5 bg-background border border-border rounded-xl text-sm focus:outline-none focus:border-primary transition-all placeholder:text-muted-foreground"
+            className={fieldClassName}
           />
         </InputWrapper>
 
@@ -152,7 +163,7 @@ export function Filters({ filters, setFilters, uniqueOptions, lastUpdated }: Fil
           <select
             value={filters.sortBy || "score"}
             onChange={(e) => updateFilter("sortBy", e.target.value as ListJobsParams["sortBy"])}
-            className="w-full px-4 py-2.5 bg-background border border-border rounded-xl text-sm focus:outline-none focus:border-primary transition-all text-foreground appearance-none"
+            className={fieldClassName}
           >
             <option value="score">Highest Score</option>
             <option value="date">Most Recent</option>
