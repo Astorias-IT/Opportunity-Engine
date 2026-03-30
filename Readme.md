@@ -26,6 +26,7 @@ To run this project you only need:
 Installation:
 
 sudo apt update
+
 sudo apt install -y ca-certificates curl gnupg
 
 sudo install -m 0755 -d /etc/apt/keyrings
