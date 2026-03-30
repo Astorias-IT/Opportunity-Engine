@@ -20,10 +20,12 @@ Opportunity Engine is a lightweight job aggregation and tracking system with a F
 
 To run this project you only need:
 
-* Docker
-* Docker Compose
+* Docker Engine
+* Docker Compose (v2)
 
-Installation:
+---
+
+## 🐳 Install Docker (Ubuntu)
 
 ```bash
 sudo apt update
@@ -44,24 +46,20 @@ sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 sudo apt update
 
-sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
-```
-
-Next:
-
-                                                          
-```bash
+sudo apt install -y docker-ce docker-ce-cli containerd.io \
+docker-buildx-plugin docker-compose-plugin
 
 sudo systemctl enable docker.socket
-
 sudo systemctl start docker.socket
 
 sudo systemctl enable docker.service
-
 sudo systemctl start docker.service
 
+sudo usermod -aG docker $USER
+newgrp docker
 ```
+
+---
 
 ## ⚡ Quick Start (Docker - Recommended)
 
@@ -78,7 +76,14 @@ cd Opportunity-Engine
 docker compose up --build -d
 ```
 
-### 3. Open in Browser
+### 3. Verify Containers
+
+```bash
+docker compose ps
+docker compose logs -f
+```
+
+### 4. Open in Browser
 
 ```
 http://localhost
@@ -108,7 +113,7 @@ View logs:
 docker compose logs -f
 ```
 
-Rebuild only backend:
+Rebuild backend only:
 
 ```bash
 docker compose build backend
@@ -126,14 +131,14 @@ docker compose up --build -d
 
 ## 🧠 How It Works
 
-* Frontend is built inside Docker
-* Nginx serves the frontend and proxies API requests
+* Nginx serves the frontend and proxies API requests to the backend
 * Backend runs FastAPI on port `8000`
-* SQLite database is persisted via volume
+* SQLite database persists on the host machine via `jobs.db`
+* Docker Compose orchestrates backend and Nginx services
 
 ---
 
-## 🧪 Healthcheck
+## 🧪 Health Endpoint
 
 The backend exposes:
 
@@ -141,7 +146,7 @@ The backend exposes:
 http://localhost:8000/health
 ```
 
-Docker automatically checks this endpoint to ensure the service is running correctly.
+You can use this endpoint to verify that the API is running.
 
 ---
 
@@ -152,9 +157,9 @@ Opportunity-Engine/
 │
 ├── app/               # Backend (FastAPI)
 ├── frontend/          # Frontend source (Vite)
-├── nginx/             # Nginx config + Dockerfile
+├── nginx/             # Nginx config
 │
-├── Dockerfile         # Backend Dockerfile
+├── Dockerfile         # Backend image
 ├── docker-compose.yml # Orchestration
 ├── requirements.txt   # Python dependencies
 ├── jobs.db            # SQLite DB (auto-created)
@@ -201,37 +206,35 @@ app/services/aggregator.py
 app/core/scoring.py
 ```
 
-* `aggregator.py` → scraping logic
-* `scoring.py` → filtering and ranking
+* `aggregator.py` → scraping logic  
+* `scoring.py` → filtering and ranking  
 
 ---
 
 ## 🧹 Notes
 
-* No need for `node_modules`, `.venv`, or `frontend/dist`
-* Everything is built inside Docker
-* Database is created automatically
-* Fully portable across environments
+* Database is created automatically if it does not exist
+* Data persists between restarts
+* To fully reset the data, delete `jobs.db`
+* Docker Compose uses `docker compose` (v2), not `docker-compose`
 
 ---
 
 ## ⚠️ Troubleshooting
 
-If something doesn’t work:
-
-* Rebuild everything:
+Rebuild everything:
 
 ```bash
 docker compose up --build -d
 ```
 
-* Check logs:
+Check logs:
 
 ```bash
 docker compose logs -f
 ```
 
-* Verify backend health:
+Verify backend:
 
 ```
 http://localhost:8000/health
