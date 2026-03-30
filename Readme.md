@@ -1,19 +1,38 @@
 # Opportunity Engine
 
-Opportunity Engine is a lightweight job aggregation and tracking system with a FastAPI backend and a modern frontend.
+Opportunity Engine is a lightweight job aggregation and tracking system with a FastAPI backend, modern frontend, and Docker-based deployment.
 
 ---
 
 ## 🚀 Project Overview
 
-Backend: FastAPI (Python)
-Frontend: Vite (Node.js)
-Database: SQLite (jobs.db)
-Purpose: Aggregate, filter, and track job opportunities efficiently
+* **Backend:** FastAPI (Python)
+* **Frontend:** Vite (Node.js)
+* **Reverse Proxy:** Nginx
+* **Database:** SQLite (`jobs.db`)
+* **Deployment:** Docker + Docker Compose
+
+**Purpose:** Aggregate, filter, and track job opportunities efficiently.
 
 ---
 
-## 📦 Installation & Setup
+## 📋 Requirements
+
+To run this project you only need:
+
+* Docker
+* Docker Compose
+
+Check installation:
+
+```bash
+docker --version
+docker compose version
+```
+
+---
+
+## ⚡ Quick Start (Docker - Recommended)
 
 ### 1. Clone the Repository
 
@@ -22,87 +41,76 @@ git clone https://github.com/Astorias-IT/Opportunity-Engine.git
 cd Opportunity-Engine
 ```
 
----
-
-## ⚡ Quick Start (Recommended)
-
-Run everything with a single command:
+### 2. Run the Application
 
 ```bash
-chmod +x run.sh
-./run.sh
+docker compose up --build -d
 ```
 
-This will automatically:
+### 3. Open in Browser
 
-* Create virtual environment
-* Install backend dependencies
-* Install frontend dependencies
-* Configure environment
-* Start backend and frontend
+```
+http://localhost
+```
 
 ---
 
-## 🧠 Manual Setup (Optional)
-
-### Backend
+## 🛑 Stop the Application
 
 ```bash
-cd Opportunity-Engine
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload
+docker compose down
 ```
-
-Backend URLs:
-API: http://127.0.0.1:8000
-Docs: http://127.0.0.1:8000/docs
 
 ---
 
-### Frontend
+## 🔍 Useful Commands
+
+Check running containers:
 
 ```bash
-cd frontend
-npm install
-npm run dev
+docker compose ps
 ```
 
-Frontend URL:
-http://localhost:5173
-
----
-
-## ⚙️ Environment (Optional)
-
-By default, the frontend connects to:
-
-```
-http://localhost:8000
-```
-
-To override:
+View logs:
 
 ```bash
-cd frontend
-cp .env.example .env
+docker compose logs -f
 ```
 
-Edit `.env`:
+Rebuild only backend:
 
+```bash
+docker compose build backend
 ```
-VITE_API_BASE_URL=http://localhost:8000
+
+Clean environment (simulate fresh machine):
+
+```bash
+docker compose down
+docker system prune -f
+docker compose up --build -d
 ```
 
 ---
 
-## 🧪 How to Use
+## 🧠 How It Works
 
-1. Run the project (`./run.sh` recommended)
-2. Open the frontend
-3. Click **Run Global Fetch**
-4. Browse and manage jobs (apply, reject, filter, track)
+* Frontend is built inside Docker
+* Nginx serves the frontend and proxies API requests
+* Backend runs FastAPI on port `8000`
+* SQLite database is persisted via volume
+
+---
+
+## 🧪 Healthcheck
+
+The backend exposes:
+
+```
+http://localhost:8000/health
+```
+
+Docker automatically checks this endpoint to ensure the service is running correctly.
 
 ---
 
@@ -111,24 +119,38 @@ VITE_API_BASE_URL=http://localhost:8000
 ```
 Opportunity-Engine/
 │
-├── app/               # Backend logic (FastAPI)
-├── frontend/          # Frontend (Vite)
+├── app/               # Backend (FastAPI)
+├── frontend/          # Frontend source (Vite)
+├── nginx/             # Nginx config + Dockerfile
+│
+├── Dockerfile         # Backend Dockerfile
+├── docker-compose.yml # Orchestration
 ├── requirements.txt   # Python dependencies
-├── run.sh             # One-command runner
-├── jobs.db            # SQLite database (auto-created)
-├── cli.py             # CLI utilities
-└── result/            # Output data (optional)
+├── jobs.db            # SQLite DB (auto-created)
+│
+└── .dockerignore
 ```
 
 ---
 
-## ⚠️ Notes
+## ⚙️ Local Development (Optional)
 
-* Works without `.env` (fallback included)
-* Backend must be running (handled automatically by run.sh)
-* Database is created automatically
-* Do not commit `.venv`, `node_modules`, or `.env`
-* If CORS issues appear, verify FastAPI middleware
+### Backend (without Docker)
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+
+### Frontend (without Docker)
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
 ---
 
@@ -136,29 +158,62 @@ Opportunity-Engine/
 
 This project is optimized for roles such as:
 
-Technical Support
-IT Support / Helpdesk
-Infrastructure / Systems
-Entry-level Security
+* Technical Support
+* IT Support / Helpdesk
+* Infrastructure / Systems
+* Entry-level Security
 
 Modify behavior in:
 
+```
 app/services/aggregator.py
 app/core/scoring.py
+```
 
-* aggregator.py → scraping logic
-* scoring.py → filtering and ranking
+* `aggregator.py` → scraping logic
+* `scoring.py` → filtering and ranking
 
-You can adapt it for any role (DevOps, Backend, Data, Cloud, etc.)
+---
+
+## 🧹 Notes
+
+* No need for `node_modules`, `.venv`, or `frontend/dist`
+* Everything is built inside Docker
+* Database is created automatically
+* Fully portable across environments
+
+---
+
+## ⚠️ Troubleshooting
+
+If something doesn’t work:
+
+* Rebuild everything:
+
+```bash
+docker compose up --build -d
+```
+
+* Check logs:
+
+```bash
+docker compose logs -f
+```
+
+* Verify backend health:
+
+```
+http://localhost:8000/health
+```
 
 ---
 
 ## 🔥 Future Improvements
 
-Deployment (Render, Railway, VPS)
-Authentication system
-Job tracking improvements
-Automation / notifications
+* VPS / Cloud deployment
+* Authentication system
+* Job tracking enhancements
+* Notifications / automation
 
 ---
 
