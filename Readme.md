@@ -48,8 +48,11 @@ sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin d
 Next: 
 
 sudo systemctl enable docker.socket
+
 sudo systemctl start docker.socket
+
 sudo systemctl enable docker.service
+
 sudo systemctl start docker.service
 
 ---
