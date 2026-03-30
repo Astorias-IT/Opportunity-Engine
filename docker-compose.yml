@@ -1,0 +1,28 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: opportunity-backend
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./jobs.db:/app/jobs.db
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    container_name: opportunity-nginx
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend

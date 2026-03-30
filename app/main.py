@@ -1,9 +1,6 @@
-from pathlib import Path
-
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, JSONResponse
-from fastapi.staticfiles import StaticFiles
+from fastapi.responses import JSONResponse
 
 from app.core.scoring import score_job
 from app.db.database import (
@@ -20,28 +17,9 @@ from app.services.aggregator import scrape_all_jobs
 
 app = FastAPI(title="Opportunity Engine API")
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-FRONTEND_DIR = BASE_DIR / "frontend"
-FRONTEND_DIST_DIR = FRONTEND_DIR / "dist"
-
-# Vite build output
-BUILT_INDEX = FRONTEND_DIST_DIR / "index.html"
-BUILT_ASSETS_DIR = FRONTEND_DIST_DIR / "assets"
-
-# Optional plain frontend fallback
-DEV_INDEX = FRONTEND_DIR / "index.html"
-DEV_STATIC_DIR = FRONTEND_DIR / "static"
-DEV_IMAGES_DIR = FRONTEND_DIR / "images"
-
-# CORS for local frontend development
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-    ],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -53,43 +31,13 @@ def startup():
     init_db()
 
 
-# Serve built Vite assets if they exist
-if BUILT_ASSETS_DIR.exists():
-    app.mount("/assets", StaticFiles(directory=BUILT_ASSETS_DIR), name="assets")
-
-# Optional dev/static folders
-if DEV_STATIC_DIR.exists():
-    app.mount("/static", StaticFiles(directory=DEV_STATIC_DIR), name="static")
-
-if DEV_IMAGES_DIR.exists():
-    app.mount("/images", StaticFiles(directory=DEV_IMAGES_DIR), name="images")
-
-
-def serve_frontend_index():
-    """
-    Serve the built frontend if available.
-    Fallback to a plain frontend index.html if present.
-    Otherwise return a small API status payload.
-    """
-    if BUILT_INDEX.exists():
-        return FileResponse(BUILT_INDEX)
-
-    if DEV_INDEX.exists():
-        return FileResponse(DEV_INDEX)
-
-    return JSONResponse(
-        status_code=200,
-        content={
-            "status": "ok",
-            "message": "Opportunity Engine API is running, frontend not built yet",
-            "docs": "/docs",
-        },
-    )
-
-
 @app.get("/")
 def root():
-    return serve_frontend_index()
+    return {
+        "status": "ok",
+        "message": "Opportunity Engine API running",
+        "docs": "/docs",
+    }
 
 
 @app.get("/health")
@@ -283,15 +231,3 @@ def fetch_runs(limit: int = Query(default=20, ge=1, le=100)):
             status_code=500,
             content={"error": str(exc)},
         )
-
-
-@app.get("/{full_path:path}")
-def spa_fallback(full_path: str):
-    """
-    For SPA routes, return index.html only when a frontend exists.
-    Otherwise return a real 404 so API mistakes are visible.
-    """
-    if BUILT_INDEX.exists() or DEV_INDEX.exists():
-        return serve_frontend_index()
-
-    raise HTTPException(status_code=404, detail="Not Found")
