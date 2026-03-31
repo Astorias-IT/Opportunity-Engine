@@ -43,7 +43,7 @@ export function Dashboard() {
       ]);
       toast({
         title: "Fetch complete",
-        description: "Opportunity Engine refreshed the stored dataset.",
+        description: "Role Harbor refreshed the stored dataset.",
       });
     },
     onError: (error: Error) => {

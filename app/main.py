@@ -15,7 +15,7 @@ from app.db.database import (
 )
 from app.services.aggregator import scrape_all_jobs
 
-app = FastAPI(title="Opportunity Engine API")
+app = FastAPI(title="Role Harbor API")
 
 app.add_middleware(
     CORSMiddleware,
@@ -35,7 +35,7 @@ def startup():
 def root():
     return {
         "status": "ok",
-        "message": "Opportunity Engine API running",
+        "message": "Role Harbor API running",
         "docs": "/docs",
     }
 
@@ -44,7 +44,7 @@ def root():
 def health():
     return {
         "status": "ok",
-        "app": "opportunity-engine",
+        "app": "role-harbor",
     }
 
 

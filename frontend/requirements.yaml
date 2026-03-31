@@ -5,7 +5,7 @@ packages:
   "lucide-react": "For beautiful consistent icons"
 
 images:
-  - path: "artifacts/opportunity-engine/public/images/header-bg.png"
+  - path: "artifacts/role-harbor/public/images/header-bg.png"
     description: "Abstract minimal dark background with subtle deep blue and teal glowing gradient orbs, extremely soft and blurred, perfect for glassmorphism overlay"
     aspect_ratio: "16:9"
 

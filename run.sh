@@ -8,7 +8,7 @@ VENV_DIR="$PROJECT_ROOT/.venv"
 BACKEND_PORT=8000
 FRONTEND_PORT=5173
 
-echo "Starting Opportunity Engine..."
+echo "Starting Role Harbor..."
 
 if ! command -v python3 >/dev/null 2>&1; then
   echo "Error: python3 is not installed."

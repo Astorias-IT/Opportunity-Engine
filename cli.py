@@ -84,7 +84,7 @@ def show_fetch_runs(limit: int) -> None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Opportunity Engine CLI")
+    parser = argparse.ArgumentParser(description="Role Harbor CLI")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     subparsers.add_parser("fetch", help="Trigger a fetch run")

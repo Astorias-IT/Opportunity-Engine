@@ -1,6 +1,6 @@
-# Opportunity Engine
+# Role Harbor
 
-Opportunity Engine is a lightweight job aggregation and tracking system with a FastAPI backend, modern frontend, and Docker-based deployment.
+Role Harbor is a lightweight job aggregation and tracking system with a FastAPI backend, modern frontend, and Docker-based deployment.
 
 ---
 
@@ -66,8 +66,8 @@ newgrp docker
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Astorias-IT/Opportunity-Engine.git
-cd Opportunity-Engine
+git clone https://github.com/Astorias-IT/Role-Harbor.git
+cd Role-Harbor
 ```
 
 ### 2. Run the Application
@@ -153,7 +153,7 @@ You can use this endpoint to verify that the API is running.
 ## 📁 Project Structure
 
 ```
-Opportunity-Engine/
+Role-Harbor/
 │
 ├── app/               # Backend (FastAPI)
 ├── frontend/          # Frontend source (Vite)
