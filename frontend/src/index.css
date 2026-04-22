@@ -45,7 +45,7 @@
     min-height: 100vh;
     background:
       linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)),
-      url("/background.jpg") center/cover no-repeat fixed;
+      url("/background.jpg") center/cover no-repeat;
   }
 
   h1, h2, h3 {
@@ -137,4 +137,18 @@ button.bg-red-500, button:has(span:contains("Reject")), .bg-destructive {
 .glass-surface .bg-white\/10 {
   background: rgba(255, 255, 255, 0.4) !important;
   border: 1px solid rgba(0,0,0,0.05) !important;
+}
+
+/* ===== Force persistent global background ===== */
+html, body, #root {
+  min-height: 100%;
+  background: transparent !important;
+}
+
+body {
+  background: transparent !important;
+}
+
+#root {
+  min-height: 100vh;
 }
