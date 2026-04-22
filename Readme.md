@@ -1,33 +1,23 @@
-# Role Harbor
+Role Harbor
 
 Role Harbor is a lightweight job aggregation and tracking system with a FastAPI backend, modern frontend, and Docker-based deployment.
 
----
+🚀 Project Overview
+Backend: FastAPI (Python)
+Frontend: Vite (Node.js)
+Reverse Proxy: Nginx
+Database: SQLite (data/jobs.db)
+Deployment: Docker + Docker Compose
 
-## 🚀 Project Overview
+Purpose: Aggregate, filter, and track job opportunities efficiently.
 
-- **Backend:** FastAPI (Python)
-- **Frontend:** Vite (Node.js)
-- **Reverse Proxy:** Nginx
-- **Database:** SQLite (`data/jobs.db`)
-- **Deployment:** Docker + Docker Compose
-
-**Purpose:** Aggregate, filter, and track job opportunities efficiently.
-
----
-
-## 📋 Requirements
+📋 Requirements
 
 To run this project you only need:
 
-- Docker Engine
-- Docker Compose (v2)
-
----
-
-## 🐳 Install Docker (Ubuntu)
-
-```bash
+Docker Engine
+Docker Compose (v2)
+🐳 Install Docker (Ubuntu)
 sudo apt update
 sudo apt install -y ca-certificates curl gnupg
 
@@ -114,7 +104,13 @@ production domains
 No hardcoded URLs (like localhost:8000) are used.
 
 🧪 Health Endpoint
+
+The backend exposes:
+
 http://localhost:8000/health
+
+You can use this endpoint to verify that the API is running.
+
 📁 Project Structure
 Role-Harbor/
 │
@@ -140,6 +136,13 @@ cd frontend
 npm install
 npm run dev
 🎯 Customization
+
+This project is optimized for roles such as:
+
+Technical Support
+IT Support / Helpdesk
+Infrastructure / Systems
+Entry-level Security
 
 Modify behavior in:
 
