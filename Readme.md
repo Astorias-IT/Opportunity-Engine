@@ -151,7 +151,19 @@ text http://localhost:8000/health
 
 ## 📁 Project Structure
 
-Role-Harbor/ │ ├── app/               # Backend (FastAPI) ├── frontend/          # Frontend source (Vite) ├── nginx/             # Nginx config ├── data/              # Persistent data directory │   └── jobs.db        # SQLite DB (auto-created) │ ├── Dockerfile         # Backend image ├── docker-compose.yml # Orchestration ├── requirements.txt   # Python dependencies │ └── .dockerignore
+Role-Harbor/
+│
+├── app/               # Backend (FastAPI)
+├── frontend/          # Frontend source (Vite)
+├── nginx/             # Nginx config
+├── data/              # Persistent data directory
+│   └── jobs.db        # SQLite DB (auto-created)
+│
+├── Dockerfile         # Backend image
+├── docker-compose.yml # Orchestration
+├── requirements.txt   # Python dependencies
+│
+└── .dockerignore
 
 ---
 
