@@ -6,11 +6,11 @@ Role Harbor is a lightweight job aggregation and tracking system with a FastAPI 
 
 ## 🚀 Project Overview
 
-* Backend: FastAPI (Python)
-* Frontend: Vite (Node.js)
-* Reverse Proxy: Nginx
-* Database: SQLite (data/jobs.db)
-* Deployment: Docker + Docker Compose
+- Backend: FastAPI (Python)  
+- Frontend: Vite (Node.js)  
+- Reverse Proxy: Nginx  
+- Database: SQLite (data/jobs.db)  
+- Deployment: Docker + Docker Compose  
 
 Purpose: Aggregate, filter, and track job opportunities efficiently.
 
@@ -20,8 +20,8 @@ Purpose: Aggregate, filter, and track job opportunities efficiently.
 
 To run this project you only need:
 
-* Docker Engine
-* Docker Compose (v2)
+- Docker Engine  
+- Docker Compose (v2)  
 
 ---
 
@@ -79,11 +79,11 @@ bash docker compose down docker system prune -f docker compose up --build -d
 
 ## 🧠 How It Works
 
-* Nginx serves the frontend (static files)
-* Nginx proxies API requests to the backend via /api
-* Backend runs FastAPI on port 8000
-* SQLite database persists on the host via data/jobs.db
-* Docker Compose orchestrates backend and Nginx services
+- Nginx serves the frontend (static files)  
+- Nginx proxies API requests to the backend via /api  
+- Backend runs FastAPI on port 8000  
+- SQLite database persists on the host via data/jobs.db  
+- Docker Compose orchestrates backend and Nginx services  
 
 ---
 
@@ -93,15 +93,15 @@ The frontend communicates with the backend using relative paths under /api.
 
 Nginx acts as a reverse proxy:
 
-* / → frontend
-* /api/* → backend
+- / → frontend  
+- /api/* → backend  
 
 This ensures the app works correctly in:
 
-* localhost
-* LAN environments
-* Tailscale
-* production domains
+- localhost  
+- LAN environments  
+- Tailscale  
+- production domains  
 
 No hardcoded URLs (like localhost:8000) are used.
 
@@ -109,11 +109,7 @@ No hardcoded URLs (like localhost:8000) are used.
 
 ## 🧪 Health Endpoint
 
-The backend exposes:
-
-http://localhost:8000/health
-
-You can use this endpoint to verify that the API is running.
+text http://localhost:8000/health 
 
 ---
 
@@ -137,30 +133,23 @@ bash cd frontend npm install npm run dev
 
 ## 🎯 Customization
 
-This project is optimized for roles such as:
-
-* Technical Support
-* IT Support / Helpdesk
-* Infrastructure / Systems
-* Entry-level Security
-
 Modify behavior in:
 
 app/services/aggregator.py app/core/scoring.py
 
-* aggregator.py → scraping logic  
-* scoring.py → filtering and ranking  
+- aggregator.py → scraping logic  
+- scoring.py → filtering and ranking  
 
 ---
 
 ## 🧹 Notes
 
-* Database is created automatically at data/jobs.db
-* The data/ directory is mounted as a Docker volume
-* Data persists between restarts
-* To fully reset the data, delete data/jobs.db
-* Do NOT commit the data/ directory
-* Docker Compose uses docker compose (v2), not docker-compose
+- Database is created automatically at data/jobs.db  
+- The data/ directory is mounted as a Docker volume  
+- Data persists between restarts  
+- To fully reset the data, delete data/jobs.db  
+- Do NOT commit the data/ directory  
+- Docker Compose uses docker compose (v2), not docker-compose  
 
 ---
 
@@ -168,7 +157,7 @@ app/services/aggregator.py app/core/scoring.py
 
 The application uses a bind-mounted directory:
 
-./data → /app/data
+text ./data → /app/data 
 
 This avoids fragile file-based mounts and ensures portability across environments.
 
@@ -186,22 +175,22 @@ bash docker compose logs -f
 
 Verify backend:
 
-http://localhost:8000/health
+text http://localhost:8000/health 
 
 ---
 
 ## 🔥 Future Improvements
 
-* VPS / Cloud deployment
-* Authentication system
-* Job tracking enhancements
-* Notifications / automation
+- VPS / Cloud deployment  
+- Authentication system  
+- Job tracking enhancements  
+- Notifications / automation  
 
 ---
 
 ## 👨‍💻 Author
 
-Abel Tana
+Abel Tana  
 
 ---
 
