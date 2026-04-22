@@ -1,23 +1,33 @@
-Role Harbor
+# Role Harbor
 
 Role Harbor is a lightweight job aggregation and tracking system with a FastAPI backend, modern frontend, and Docker-based deployment.
 
-🚀 Project Overview
-Backend: FastAPI (Python)
-Frontend: Vite (Node.js)
-Reverse Proxy: Nginx
-Database: SQLite (data/jobs.db)
-Deployment: Docker + Docker Compose
+---
 
-Purpose: Aggregate, filter, and track job opportunities efficiently.
+## 🚀 Project Overview
 
-📋 Requirements
+* **Backend:** FastAPI (Python)
+* **Frontend:** Vite (Node.js)
+* **Reverse Proxy:** Nginx
+* **Database:** SQLite (`data/jobs.db`)
+* **Deployment:** Docker + Docker Compose
+
+**Purpose:** Aggregate, filter, and track job opportunities efficiently.
+
+---
+
+## 📋 Requirements
 
 To run this project you only need:
 
-Docker Engine
-Docker Compose (v2)
-🐳 Install Docker (Ubuntu)
+* Docker Engine
+* Docker Compose (v2)
+
+---
+
+## 🐳 Install Docker (Ubuntu)
+
+```bash
 sudo apt update
 sudo apt install -y ca-certificates curl gnupg
 
@@ -47,71 +57,119 @@ sudo systemctl start docker.service
 
 sudo usermod -aG docker $USER
 newgrp docker
-⚡ Quick Start (Docker - Recommended)
-1. Clone the Repository
+```
+
+---
+
+## ⚡ Quick Start (Docker - Recommended)
+
+### 1. Clone the Repository
+
+```bash
 git clone https://github.com/AbelT-IT/Role-Harbor
 cd Role-Harbor
-2. Run the Application
+```
+
+### 2. Run the Application
+
+```bash
 docker compose up --build -d
-3. Verify Containers
+```
+
+### 3. Verify Containers
+
+```bash
 docker compose ps
 docker compose logs -f
-4. Open in Browser
+```
+
+### 4. Open in Browser
+
+```
 http://localhost
-🛑 Stop the Application
+```
+
+---
+
+## 🛑 Stop the Application
+
+```bash
 docker compose down
-🔍 Useful Commands
+```
+
+---
+
+## 🔍 Useful Commands
 
 Check running containers:
 
+```bash
 docker compose ps
+```
 
 View logs:
 
+```bash
 docker compose logs -f
+```
 
 Rebuild backend only:
 
+```bash
 docker compose build backend
+```
 
 Clean environment (simulate fresh machine):
 
+```bash
 docker compose down
 docker system prune -f
 docker compose up --build -d
-🧠 How It Works
-Nginx serves the frontend (static files)
-Nginx proxies API requests to the backend via /api
-Backend runs FastAPI on port 8000
-SQLite database persists on the host via data/jobs.db
-Docker Compose orchestrates backend and Nginx services
-🌐 API Routing
+```
 
-The frontend communicates with the backend using relative paths under /api.
+---
+
+## 🧠 How It Works
+
+* Nginx serves the frontend (static files)
+* Nginx proxies API requests to the backend via `/api`
+* Backend runs FastAPI on port `8000`
+* SQLite database persists on the host via `data/jobs.db`
+* Docker Compose orchestrates backend and Nginx services
+
+---
+
+## 🌐 API Routing
+
+The frontend communicates with the backend using relative paths under `/api`.
 
 Nginx acts as a reverse proxy:
 
-/ → frontend
-/api/* → backend
+* `/` → frontend
+* `/api/*` → backend
 
 This ensures the app works correctly in:
 
-localhost
-LAN environments
-Tailscale
-production domains
+* localhost
+* LAN environments
+* Tailscale
+* production domains
 
-No hardcoded URLs (like localhost:8000) are used.
+No hardcoded URLs (like `localhost:8000`) are used.
 
-🧪 Health Endpoint
+---
 
-The backend exposes:
+## 🧪 Health Endpoint
 
+```text
 http://localhost:8000/health
+```
 
-You can use this endpoint to verify that the API is running.
+---
 
-📁 Project Structure
+## 📁 Project Structure
+
+```
 Role-Harbor/
 │
 ├── app/               # Backend (FastAPI)
@@ -125,68 +183,105 @@ Role-Harbor/
 ├── requirements.txt   # Python dependencies
 │
 └── .dockerignore
-⚙️ Local Development (Optional)
-Backend (without Docker)
+```
+
+---
+
+## ⚙️ Local Development (Optional)
+
+### Backend (without Docker)
+
+```bash
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 uvicorn app.main:app --reload
-Frontend (without Docker)
+```
+
+### Frontend (without Docker)
+
+```bash
 cd frontend
 npm install
 npm run dev
-🎯 Customization
+```
 
-This project is optimized for roles such as:
+---
 
-Technical Support
-IT Support / Helpdesk
-Infrastructure / Systems
-Entry-level Security
+## 🎯 Customization
 
 Modify behavior in:
 
+```
 app/services/aggregator.py
 app/core/scoring.py
-aggregator.py → scraping logic
-scoring.py → filtering and ranking
-🧹 Notes
-Database is created automatically at data/jobs.db
-The data/ directory is mounted as a Docker volume
-Data persists between restarts
-To fully reset the data, delete data/jobs.db
-Do NOT commit the data/ directory
-Docker Compose uses docker compose (v2), not docker-compose
-⚠️ Persistence
+```
+
+* `aggregator.py` → scraping logic
+* `scoring.py` → filtering and ranking
+
+---
+
+## 🧹 Notes
+
+* Database is created automatically at `data/jobs.db`
+* The `data/` directory is mounted as a Docker volume
+* Data persists between restarts
+* To fully reset the data, delete `data/jobs.db`
+* Do NOT commit the `data/` directory
+* Docker Compose uses `docker compose` (v2), not `docker-compose`
+
+---
+
+## ⚠️ Persistence
 
 The application uses a bind-mounted directory:
 
+```text
 ./data → /app/data
+```
 
 This avoids fragile file-based mounts and ensures portability across environments.
 
-⚠️ Troubleshooting
+---
+
+## ⚠️ Troubleshooting
 
 Rebuild everything:
 
+```bash
 docker compose up --build -d
+```
 
 Check logs:
 
+```bash
 docker compose logs -f
+```
 
 Verify backend:
 
+```text
 http://localhost:8000/health
-🔥 Future Improvements
-VPS / Cloud deployment
-Authentication system
-Job tracking enhancements
-Notifications / automation
-👨‍💻 Author
+```
+
+---
+
+## 🔥 Future Improvements
+
+* VPS / Cloud deployment
+* Authentication system
+* Job tracking enhancements
+* Notifications / automation
+
+---
+
+## 👨‍💻 Author
 
 Abel Tana
 
-📄 License
+---
+
+## 📄 License
 
 This project is for personal and educational use.
