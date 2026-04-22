@@ -4,7 +4,6 @@ __pycache__/
 *.pyc
 
 # Database
-jobs.db
 
 # Environment files
 .env
@@ -19,3 +18,4 @@ frontend/dist/
 .DS_Store
 .vscode/
 .idea/
+data/

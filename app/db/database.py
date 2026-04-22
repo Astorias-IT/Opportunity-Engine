@@ -2,7 +2,8 @@ import sqlite3
 from pathlib import Path
 from typing import Any
 
-DB_PATH = Path("jobs.db")
+DB_PATH = Path("data/jobs.db")
+DB_PATH.parent.mkdir(parents=True, exist_ok=True)
 
 JOB_STATUSES = {"new", "applied", "interview", "rejected", "offer"}
 

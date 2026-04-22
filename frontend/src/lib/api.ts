@@ -76,7 +76,7 @@ interface JobActionResponse {
 }
 
 const API_BASE = (
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:8000"
+  import.meta.env.VITE_API_BASE_URL || ""
 ).replace(/\/$/, "");
 
 function buildUrl(path: string): string {
@@ -226,11 +226,11 @@ function applyFilters(jobs: Job[], filters: ListJobsParams): Job[] {
 }
 
 export async function getHealth(): Promise<{ status: string; app?: string }> {
-  return request<{ status: string; app?: string }>("/health");
+  return request<{ status: string; app?: string }>("/api/health");
 }
 
 export async function getJobs(filters: ListJobsParams = {}): Promise<JobsResponse> {
-  const raw = await request<RawJob[] | { jobs?: RawJob[]; count?: number }>("/jobs");
+  const raw = await request<RawJob[] | { jobs?: RawJob[]; count?: number }>("/api/jobs");
   const baseJobs = Array.isArray(raw) ? raw : Array.isArray(raw?.jobs) ? raw.jobs : [];
   const jobs = baseJobs.map(normalizeJob);
   const filteredJobs = applyFilters(jobs, filters);
@@ -250,21 +250,21 @@ export async function getJobs(filters: ListJobsParams = {}): Promise<JobsRespons
 }
 
 export async function runFetch(): Promise<unknown> {
-  return request("/fetch", { method: "POST" });
+  return request("/api/fetch", { method: "POST" });
 }
 
 export async function applyJob(id: number): Promise<Job> {
-  const raw = await request<JobActionResponse>(`/jobs/${id}/apply`, { method: "POST" });
+  const raw = await request<JobActionResponse>(`/api/jobs/${id}/apply`, { method: "POST" });
   return normalizeJob(raw.job ?? {});
 }
 
 export async function rejectJob(id: number): Promise<Job> {
-  const raw = await request<JobActionResponse>(`/jobs/${id}/reject`, { method: "POST" });
+  const raw = await request<JobActionResponse>(`/api/jobs/${id}/reject`, { method: "POST" });
   return normalizeJob(raw.job ?? {});
 }
 
 export async function getFetchRuns(): Promise<unknown> {
-  return request("/fetch-runs");
+  return request("/api/fetch-runs");
 }
 
 export function computeStats(jobs: Job[]): DashboardStats {
